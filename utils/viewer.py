@@ -56,7 +56,6 @@ class Viewer:
 
         if reMenu is not None:
             self.MenuStack.append(reMenu)
-        os.system("cls")
         self.displayMain()
         self.displayRecall()
 
@@ -64,6 +63,7 @@ class Viewer:
         """展示menu被动界面"""
         if self.resetCode == 2 or self.resetCode == 3 or self.resetCode == 4:
             self.menuScreen = self.MenuStack[-1].display()
+        os.system("cls")
         print("\n", self.menuScreen)
 
     def displayRecall(self):

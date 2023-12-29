@@ -5,7 +5,7 @@ class BasePlugin(object):
         Description: str = "",
         Author: str = "",
         Url: str = "",
-        Version: str = "",
+        Version: str = "0.0.0",
     ) -> None:
         # info
         self.PluginName = PluginName

@@ -35,7 +35,8 @@ def showFuncInfo(menu: Menu.Menu):
     """得到某功能的具体信息"""
     isLaw, idx = menu.ControlCtx._rule(menu.ControlCtx.getCurrentShortCut()[1:])
     if idx is not None and isLaw is True:
-        return menu.menuFuncs[idx][3] + menu.menuFuncs[idx][0], None
+        idx = idx.replace("!", "ESC")
+        return menu.menuFuncs[idx][3] + ":" + menu.menuFuncs[idx][0], None, 1
     return "", None, 1
 
 

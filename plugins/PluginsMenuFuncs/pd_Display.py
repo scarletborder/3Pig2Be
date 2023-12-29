@@ -20,8 +20,10 @@ def getAllPluginBrief(menu: Menu) -> str:
                 "<"
                 + PlugCtrl.PlugInfoList[i].get("PluginName", "NoName")
                 + "-"
+                + PlugCtrl.PlugInfoList[i].get("Version", "0.0.0")
+                + ">\nAuthor:"
                 + PlugCtrl.PlugInfoList[i].get("Author", "anonymous")
-                + ">\n描述:"
+                + "\n描述:"
                 + PlugCtrl.PlugInfoList[i].get("Description", "no description here")
                 + "\nURL:"
                 + PlugCtrl.PlugInfoList[i].get("Url", "no url here")
@@ -32,7 +34,7 @@ def getAllPluginBrief(menu: Menu) -> str:
                 "["
                 + PlugCtrl.PlugInfoList[i].get("PluginName", "NoName")
                 + "-"
-                + PlugCtrl.PlugInfoList[i].get("Author", "anonymous")
+                + PlugCtrl.PlugInfoList[i].get("Version", "0.0.0")
                 + "]\n"
             )
     return ret
