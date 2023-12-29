@@ -1,0 +1,9 @@
+Global:
+  Title: "3PIG2BE PDF 处理软件"
+  Author: "scarletborder"
+  url: "https://github.com/scarletborder/3Pig2Be"
+  Verify_Update: ""
+info:
+  LinePerPage: 10 # 显示时，每一页的最大值，-1为全部显示
+  LinePerFoot: 3 # 脚注下每条中显示的命令数量
+  BaseFuncNum: 5 # 原版支持的命令数量

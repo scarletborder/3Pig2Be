@@ -1,3 +1,7 @@
+# Some unfinished Plugin
+plugins/DefaultFileProcessor.py
+plugins/WaterPrint.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
