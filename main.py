@@ -2,7 +2,9 @@ import logging
 from config.EnvCfg import EnvCfg
 
 # 检验更新
-logging.warning("当前无法检验程序是否为最新版，因为检验更新模块还没做好")
+from utils import SoftWareInfo
+
+print(SoftWareInfo.getInfo())
 import plugins as _
 
 # 加载viewer
