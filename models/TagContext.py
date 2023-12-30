@@ -30,6 +30,26 @@ class TagContext:
     # def getOptionNums(self):
     #     return self.__optionNums
 
+    def delItem(self, itemKey: str) -> bool:
+        """删除TagCtx中的某键值对"""
+        ret = self.__store.pop(itemKey, None)
+        if ret is None:
+            return False
+        return True
+
+    def delItemWithRule(self, rule) -> int:
+        """通过某规则删除所有符合规则的item
+        rule函数对象接受一个键值对即(str,dict[Any:Any])类型参数，返回bool
+        """
+        readyToDel = []
+        for itemKey, itemValue in self.__store.items():
+            if rule((itemKey, itemValue)) is True:
+                readyToDel.append(itemKey)
+
+        for itemKey in readyToDel:
+            self.__store.pop(itemKey)
+        return len(readyToDel)
+
     def setTagDetail(self, itemKey: str, newDict: dict, overRide: bool = False):
         # if itemKey >= self.__optionNums:
         #     logging.error(
