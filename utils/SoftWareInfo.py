@@ -31,6 +31,8 @@ def verifyUpdate() -> str:
             resp = requests.get(url=url, stream=True, timeout=3)
         except requests.exceptions.ConnectTimeout:
             logging.warning(f"无法在远端验证主分支版本，连接{url}超时")
+        except BaseException as e:
+            logging.warning("Unexpected Exception" + str(e))
         else:
             remoteCfg = yaml.safe_load(resp.text)
             if EnvCfg["Global"]["Version"] == remoteCfg["Global"]["Version"]:
@@ -50,6 +52,8 @@ def verifyUpdate() -> str:
             resp = requests.get(url=url, stream=True, timeout=3)
         except requests.exceptions.ConnectTimeout:
             logging.warning(f"无法在远端验证dev分支版本，连接{url}超时")
+        except BaseException as e:
+            logging.warning("Unexpected Exception" + str(e))
         else:
             remoteCfg = yaml.safe_load(resp.text)
             if EnvCfg["Global"]["Version"] == remoteCfg["Global"]["Version"]:

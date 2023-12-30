@@ -1,6 +1,6 @@
 def __lowControlRule(s: str) -> tuple[bool, str | None]:
     """无q指令的Rule"""
-    if s in {"d", "a", "j", "k", "h", "l", "f", "p", "!"}:
+    if s in {"d", "a", "j", "k", "h", "l", "f", "p", "!", "v"}:
         return True, s
     else:
         return False, None

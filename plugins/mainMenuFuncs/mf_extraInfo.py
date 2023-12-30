@@ -1,4 +1,5 @@
 from models import Menu
+from plugins.mainMenu import _MainMenuPlug
 
 # 一些功能回显字符串
 
@@ -27,10 +28,12 @@ def __getItemDetail(menu: Menu.Menu, idx: int) -> str:
 #     return str(menu.menuFuncs[idx][3]) + str(menu.menuFuncs[idx][0]), None, 3
 
 
+@_MainMenuPlug.dregNewMenuFunc("显示item详细描述", "f", "Info", 0)
 def showItemDetail(menu: Menu.Menu):
     return __getItemDetail(menu=menu, idx=menu.kwargs["__ItemPointer"]), None, 1
 
 
+@_MainMenuPlug.dregNewMenuFunc("显示指令描述", "q", "detail", 0)
 def showFuncInfo(menu: Menu.Menu):
     """得到某功能的具体信息"""
     isLaw, idx = menu.ControlCtx._rule(menu.ControlCtx.getCurrentShortCut()[1:])
@@ -40,6 +43,7 @@ def showFuncInfo(menu: Menu.Menu):
     return "", None, 1
 
 
+@_MainMenuPlug.dregNewMenuFunc("打开插件管理器", "p", "Plugs", 0)
 def showPluginInfo(menu: Menu.Menu):
     """从主菜单打开一个插件列表二级菜单"""
     return "使用JK上下移动\nq键退出", Menu.Menu(1), 3

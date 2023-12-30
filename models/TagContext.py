@@ -45,6 +45,13 @@ class TagContext:
         self.__store[opt] = tagDict
 
     def setTagDetailWithRule(self, opt: int, rule, overRide: bool = False):
+        """通过规则得到字典改变tag上下文
+        ## params
+        - rule: 规则，接受单条项目的字典dict作为参数，返回新字典
+        - overRide:
+            - False: 用通过规则生成的某条项目新字典更新原字典
+            - True:用新的某条项目的字典替换旧的某条项目字典
+        """
         if opt >= self.__optionNums:
             logging.error(
                 "missing idx", str(opt), "max number is ", str(self.__optionNums)
@@ -82,6 +89,7 @@ class TagContext:
         return self.__store.get(opt, dict()).keys()
 
     def getTagAllDetail(self, opt: int):
+        """得到单条项目的所有属性的字典"""
         if opt >= self.__optionNums:
             logging.error(
                 "missing idx", str(opt), "max number is ", str(self.__optionNums)
@@ -98,13 +106,15 @@ class TagContext:
         tagDict = self.__store.get(opt, dict())
         return tagDict.get(tag, default)
 
-    def getCheck(self, opt: int):
-        return self.getTagDetail(opt, "checked", False)
+    def getCheck(self, opt: int, default: bool = False):
+        return self.getTagDetail(opt, "checked", default)
 
-    def getAllTagDetail(self, tag: str, default):
+    def getAllTagDetail(self, tag: str, default) -> list:
+        """得到所有项目的某属性的字典"""
         ret = []
         for opt in range(self.__optionNums):
             ret.append(self.getTagDetail(opt, tag, default))
+        return ret
 
     def getAllCheck(self):
         return self.getAllTagDetail("checked", False)

@@ -18,25 +18,29 @@ def getCurrentDir(menu: Menu.Menu):
     return menu.kwargs["manager"].CurrentDir.filePath
 
 
+def getHeader(menu: Menu.Menu):
+    return "idx\tType\tName\tTick"
+
+
 def getListDir(menu: Menu.Menu):
     """获得当前路径某页全部item的信息"""
-    PreviewItemPreviousList = menu.kwargs["PreviewItemPreviousList"]
+    PreviewItemPrefixList = menu.kwargs["PreviewItemPrefixList"]
     __ItemPointer: int = menu.kwargs["__ItemPointer"]
-    PreviewItemAfterList = menu.kwargs["PreviewItemAfterList"]
+    PreviewItemSuffixList = menu.kwargs["PreviewItemSuffixList"]
     __LINEPERPAGE: int = menu.kwargs["__LINEPERPAGE"]
     manager: Manager = menu.kwargs["manager"]
 
     ## 展示文件/文件夹 名前缀、后缀的内容
     def __previewItemPrevious(item: ItemObj.ItemObj, idx: int) -> str:
         line = ""
-        for func in PreviewItemPreviousList:
-            line += func(__ItemPointer, menu.tagCtx, idx)  # 暂时不再添加额外的信息
+        for func in PreviewItemPrefixList:
+            line += func(__ItemPointer, menu.tagCtx, idx) + "\t"  # 暂时不再添加额外的信息
         return line
 
     def __previewItemAfter(item: ItemObj.ItemObj, idx: int) -> str:
         line = ""
-        for func in PreviewItemAfterList:
-            line += func(__ItemPointer, menu.tagCtx, idx)  # 暂时不再添加额外的信息
+        for func in PreviewItemSuffixList:
+            line += func(__ItemPointer, menu.tagCtx, idx) + "\t"  # 暂时不再添加额外的信息
         return line
 
     ret = ""
@@ -47,7 +51,7 @@ def getListDir(menu: Menu.Menu):
         item = manager.CurrentDir.contents[idx]
         prefix = __previewItemPrevious(item, idx)
         after = __previewItemAfter(item, idx)
-        ret += f"{prefix}\t{item.Name}\t{after}\n"
+        ret += f"{prefix}{item.Name}\t\t{after}\n"
         idx += 1
     return ret
 

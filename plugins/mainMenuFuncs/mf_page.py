@@ -5,7 +5,7 @@
 from models import DirObj, Menu, TagContext, ItemObj
 import logging
 from utils.PlugCtrl import PlugCtrl
-
+from plugins.mainMenu import _MainMenuPlug
 
 # 基本行为(非插件)，如打开，翻页，勾选等
 # 对mainMenu进行特化
@@ -26,6 +26,7 @@ def __initTagCtx(tagCtx: TagContext.TagContext, *args, **kwargs):
         tagCtx.setTagDetail(idx, items[idx].ExtraInfo, False)
 
 
+@_MainMenuPlug.dregNewMenuFunc("打开文件夹", "d", "openDir", 0)
 def openDir(menu: Menu.Menu):
     if (
         menu.kwargs["manager"].CurrentDir.contents[menu.kwargs["__ItemPointer"]].type
@@ -50,6 +51,7 @@ def openDir(menu: Menu.Menu):
         return "", None, 3
 
 
+@_MainMenuPlug.dregNewMenuFunc("退出当前文件夹", "a", "exitDir", 0)
 def backDir(menu: Menu.Menu):
     status = menu.kwargs["manager"].backDir()
     if status is True:
@@ -67,6 +69,7 @@ def backDir(menu: Menu.Menu):
 """翻页"""
 
 
+@_MainMenuPlug.dregNewMenuFunc("", "j", "down", 0)
 def scrollDown(menu: Menu.Menu):
     if (
         menu.kwargs["__ItemPointer"]
@@ -78,6 +81,7 @@ def scrollDown(menu: Menu.Menu):
     pass
 
 
+@_MainMenuPlug.dregNewMenuFunc("", "k", "up", 0)
 def scrollUp(menu: Menu.Menu):
     if menu.kwargs["__ItemPointer"] == 0:
         return "Up to top", None, 1
@@ -85,6 +89,7 @@ def scrollUp(menu: Menu.Menu):
     return "", None, 2
 
 
+@_MainMenuPlug.dregNewMenuFunc("", "h", "left", 0)
 def scrollLeft(menu: Menu.Menu):
     lev = int(menu.kwargs["__ItemPointer"] / menu.kwargs["__LINEPERPAGE"])
     if lev == 0:
@@ -94,6 +99,7 @@ def scrollLeft(menu: Menu.Menu):
         return "", None, 2
 
 
+@_MainMenuPlug.dregNewMenuFunc("", "l", "right", 0)
 def scrollRight(menu: Menu.Menu):
     if int(menu.kwargs["__ItemPointer"] / menu.kwargs["__LINEPERPAGE"]) * menu.kwargs[
         "__LINEPERPAGE"
@@ -107,6 +113,7 @@ def scrollRight(menu: Menu.Menu):
         return "", None, 2
 
 
+@_MainMenuPlug.dregNewMenuFunc("退出程序", "ESC", "Exit", 0)
 def exitExec(menu: Menu.Menu):
     return "", None, 4
 

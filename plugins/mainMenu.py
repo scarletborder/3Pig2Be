@@ -14,6 +14,7 @@ from plugins.mainMenuFuncs.rule import controlRule
 # 被动显示
 from plugins.mainMenuFuncs.pd_Display import (
     getCurrentDir,
+    getHeader,
     getListDir,
     getPageInfo,
     littleTip,
@@ -64,7 +65,7 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
         super().__init__(PluginName, Description, Author, Url, Version)
 
 
-__MainMenuPlug = __mainMenuPlug(
+_MainMenuPlug = __mainMenuPlug(
     PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.1b"
 )
 
@@ -87,6 +88,7 @@ def __initMainMenu(menu: Menu.Menu):
     menu.ControlCtx = ControlContext.ControlContext(controlRule)
     menu.displayFuncs = [
         getCurrentDir,
+        getHeader,
         getListDir,
         getPageInfo,
         littleTip,
@@ -102,13 +104,17 @@ def __initMainMenu(menu: Menu.Menu):
     menu.kwargs["__BASEFUNCNUM"] = infoConfig.get("BaseFuncNum", 10)  # 基本行为(非插件)的数量
     menu.kwargs["__LINEPERPAGE"] = infoConfig.get("LinePerPage", 10)  # 每页资源管理器中显示的资源行数
     menu.kwargs["__LINEPERFOOT"] = infoConfig.get("LinePerFoot", 2)  # 脚注提示的快捷命令每行最大指令个数
-    menu.kwargs["PreviewItemPreviousList"] = []
-    menu.kwargs["PreviewItemAfterList"] = []
+    menu.kwargs["PreviewItemPrefixList"] = []
+    menu.kwargs["PreviewItemSuffixList"] = []
     menu.kwargs["manager"] = manager
 
 
+_MainMenuPlug.regMenuInitFunc(__initMainMenu, 0)
+
+
+@_MainMenuPlug.dregMenuInitFunc(0)
 def __prefixAndAfterPerLine(menu: Menu.Menu):
-    def __defaultPrevious(*args) -> str:
+    def __defaultPrefix(*args) -> str:
         itemPtr = args[0]
         tagCtx: TagContext.TagContext = args[1]
         idx = args[2]
@@ -122,52 +128,18 @@ def __prefixAndAfterPerLine(menu: Menu.Menu):
             line += "[D]"
         return line
 
-    def __defaultAfter(*args) -> str:
-        itemPtr = args[0]
-        tagCtx: TagContext.TagContext = args[1]
-        idx = args[2]
-        line = ""
-
-        if tagCtx.getTagDetail(idx, "checked", False) is True:
-            line += "[+]"
-        else:
-            line += "[ ]"
-        return ""
-
-    menu.kwargs["PreviewItemPreviousList"].append(__defaultPrevious)
-    menu.kwargs["PreviewItemAfterList"].append(__defaultAfter)
+    # func(__ItemPointer, menu.tagCtx, idx)
+    menu.kwargs["PreviewItemPrefixList"].append(__defaultPrefix)
 
 
-__MainMenuPlug.regMenuInitFunc(__initMainMenu, 0)
-__MainMenuPlug.regMenuInitFunc(__prefixAndAfterPerLine, 0)
-__MainMenuPlug.regNewSupportExt(["pdf"])
+_MainMenuPlug.regNewSupportExt(["pdf"])
 
 # 功能区
-from plugins.mainMenuFuncs.mf_extraInfo import (
-    showFuncInfo,
-    showItemDetail,
-    showPluginInfo,
-)
-from plugins.mainMenuFuncs.mf_page import (
-    openDir,
-    backDir,
-    scrollDown,
-    scrollUp,
-    scrollLeft,
-    scrollRight,
-    exitExec,
-)
 
-__MainMenuPlug.regNewMenuFunc(showFuncInfo, "显示指令描述", "q", "detail", 0)
-__MainMenuPlug.regNewMenuFunc(openDir, "打开文件夹", "d", "openDir", 0)
-__MainMenuPlug.regNewMenuFunc(backDir, "退出当前文件夹", "a", "exitDir", 0)
-__MainMenuPlug.regNewMenuFunc(scrollDown, "", "j", "down", 0)
-__MainMenuPlug.regNewMenuFunc(scrollUp, "", "k", "up", 0)
-__MainMenuPlug.regNewMenuFunc(scrollLeft, "", "h", "left", 0)
-__MainMenuPlug.regNewMenuFunc(scrollRight, "", "l", "right", 0)
-__MainMenuPlug.regNewMenuFunc(exitExec, "退出程序", "ESC", "Exit", 0)
-__MainMenuPlug.regNewMenuFunc(showItemDetail, "显示item详细描述", "f", "Info", 0)
-__MainMenuPlug.regNewMenuFunc(showPluginInfo, "打开插件管理器", "p", "Plugs", 0)
-# __MainMenuPlug.regNewFileConvert()
+# 拓展菜单功能
 
-PlugCtrl.loadPlugin(__MainMenuPlug)
+import plugins.mainMenuFuncs.mf_extraInfo as _
+import plugins.mainMenuFuncs.mf_page as _
+import plugins.mainMenuFuncs.mf_check as _
+
+PlugCtrl.loadPlugin(_MainMenuPlug)
