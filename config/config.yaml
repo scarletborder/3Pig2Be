@@ -4,8 +4,8 @@ Global:
   url: "https://github.com/scarletborder/3Pig2Be"
   Verify_Update: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/main/config/config.yaml"
   Verify_Update_dev: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/dev/config/config.yaml"
-  Version: "0.0.1b"
+  Version: "0.0.1c"
 info:
   LinePerPage: 10 # 显示时，每一页的最大值，-1为全部显示
-  LinePerFoot: 3 # 脚注下每条中显示的命令数量
+  LinePerFoot: 4 # 脚注下每条中显示的命令数量
   BaseFuncNum: 5 # 原版支持的命令数量

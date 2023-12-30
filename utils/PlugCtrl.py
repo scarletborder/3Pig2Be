@@ -1,4 +1,5 @@
 from models.BasePlugin import BasePlugin
+import logging
 
 
 class plugCtrl:
@@ -40,7 +41,11 @@ class plugCtrl:
                 "Description": Plugin.Description,
                 "Author": Plugin.Author,
                 "Url": Plugin.Url,
+                "Version": Plugin.Version,
             }
+        )
+        logging.info(
+            f"Load plugin successfully {Plugin.PluginName}-{Plugin.Version}-{Plugin.Author} "
         )
 
         # 放入对应的Addons到相应的容器里

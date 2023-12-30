@@ -22,7 +22,7 @@ class __pluginList(BasePlugin):
     pass
 
 
-__PluginMenuPlug = __pluginList("插件列表", "展示你安装的所有插件", "scarletborder", "", "0.0.1a")
+__PluginMenuPlug = __pluginList("插件列表", "展示你安装的所有插件", "scarletborder", "", "0.0.1b")
 
 
 def __initPluginMenu(menu: Menu):
@@ -34,6 +34,6 @@ def __initPluginMenu(menu: Menu):
 __PluginMenuPlug.regMenuInitFunc(__initPluginMenu, 1)
 __PluginMenuPlug.regNewMenuFunc(mf_handle.scrollUp, "", "k", "up", 1)
 __PluginMenuPlug.regNewMenuFunc(mf_handle.scrollDown, "", "j", "down", 1)
-__PluginMenuPlug.regNewMenuFunc(mf_handle.exit, "", "ESC", "exit", 1)
+__PluginMenuPlug.regNewMenuFunc(mf_handle.exit, "", "q", "exit", 1)
 
 PlugCtrl.loadPlugin(__PluginMenuPlug)

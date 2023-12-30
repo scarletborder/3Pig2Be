@@ -1,4 +1,4 @@
-import logging
+import os
 from config.EnvCfg import EnvCfg
 
 # 检验更新
@@ -18,5 +18,6 @@ Viewer = viewer.Viewer()
 
 
 if __name__ == "__main__":
+    os.system("pause")
     Viewer.listen()
     # 加载主菜单

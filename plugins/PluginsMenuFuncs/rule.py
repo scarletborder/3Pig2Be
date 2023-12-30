@@ -12,7 +12,7 @@ def controlRule(s: str):
         return True, "j"  # down
     elif s == "k":
         return True, "k"  # up
-    elif s == "!":
-        return True, "!"  # exit
+    elif s == "q":
+        return True, "q"  # exit
 
     return False, None

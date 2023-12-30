@@ -42,4 +42,4 @@ def showFuncInfo(menu: Menu.Menu):
 
 def showPluginInfo(menu: Menu.Menu):
     """从主菜单打开一个插件列表二级菜单"""
-    return "使用JK上下移动", Menu.Menu(1), 3
+    return "使用JK上下移动\nq键退出", Menu.Menu(1), 3

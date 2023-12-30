@@ -87,9 +87,10 @@ def supportedShortCut(menu: Menu.Menu) -> str:
                 scStr += "^"
             else:
                 scStr += str(k)
-        ret += scStr + " " + name + "\t"
+        ret += "{:<16}".format(scStr + " " + name)
         idx += 1
-        if idx % __LINEPERFOOT == 0:
+        if idx == __LINEPERFOOT:
+            idx = 0
             ret += "\n"
 
     return ret

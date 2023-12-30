@@ -47,6 +47,7 @@ class Viewer:
         """
         if self.resetCode == 4:
             if len(self.MenuStack) == 1:
+                keyboard.press("delete")
                 sys.exit(0)
             else:
                 self.MenuStack.pop()
@@ -56,22 +57,29 @@ class Viewer:
 
         if reMenu is not None:
             self.MenuStack.append(reMenu)
-        self.displayMain()
-        self.displayRecall()
 
-    def displayMain(self):
+        self.setDisplayMain()
+        self.setDisplayRecall()
+        self.Display()
+
+    def setDisplayMain(self):
         """展示menu被动界面"""
         if self.resetCode == 2 or self.resetCode == 3 or self.resetCode == 4:
             self.menuScreen = self.MenuStack[-1].display()
-        os.system("cls")
-        print("\n", self.menuScreen)
+        return
 
-    def displayRecall(self):
+    def setDisplayRecall(self):
         """展示menu回馈字符串"""
-        print("\n", "=" * 10)
-        print(self.recallBuffer)
+        return
+
+    def Display(self):
+        os.system("cls")
+        print(
+            "\n", self.menuScreen, "\n", "=" * 10, "\n", self.recallBuffer, flush=True
+        )
 
     def listen(self):
         keyboard.hook(self.readKey)
-        self.displayMain()
-        keyboard.wait()
+        self.setDisplayMain()
+        self.Display()
+        keyboard.wait("ESC")

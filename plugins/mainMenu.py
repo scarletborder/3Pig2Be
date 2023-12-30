@@ -65,7 +65,7 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
 
 
 __MainMenuPlug = __mainMenuPlug(
-    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.1a"
+    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.1b"
 )
 
 
@@ -158,7 +158,7 @@ from plugins.mainMenuFuncs.mf_page import (
     exitExec,
 )
 
-__MainMenuPlug.regNewMenuFunc(showFuncInfo, "显示指令描述", "q", "详", 0)
+__MainMenuPlug.regNewMenuFunc(showFuncInfo, "显示指令描述", "q", "detail", 0)
 __MainMenuPlug.regNewMenuFunc(openDir, "打开文件夹", "d", "openDir", 0)
 __MainMenuPlug.regNewMenuFunc(backDir, "退出当前文件夹", "a", "exitDir", 0)
 __MainMenuPlug.regNewMenuFunc(scrollDown, "", "j", "down", 0)
