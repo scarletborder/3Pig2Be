@@ -21,7 +21,7 @@ def startInfo() -> str:
 
 def verifyUpdate() -> str:
     ret = ""
-    url: str = EnvCfg.get("Verify_Update", "")
+    url: str = EnvCfg["Global"]["Verify_Update"]
     if url == "":
         logging.warning(
             "Can not verify Main Branch version for the lost argument in config/config.yaml"
@@ -40,7 +40,7 @@ def verifyUpdate() -> str:
             else:
                 ret += f"你的版本落后于远端主分支版本\n"
 
-    url: str = EnvCfg.get("Verify_Update_dev", "")
+    url: str = EnvCfg["Global"]["Verify_Update_dev"]
     if url == "":
         logging.warning(
             "Can not verify Dev Branch version for the lost argument in config/config.yaml"
