@@ -1,5 +1,6 @@
 from models import DirObj, FileObj, ItemObj, ControlContext, TagContext, Manager
 from utils.PlugCtrl import PlugCtrl
+from utils.handleChar import outp
 
 
 class Menu:
@@ -32,7 +33,7 @@ class Menu:
     def input(self, inp: str) -> tuple:
         idx = self.ControlCtx.input(inp)
         if idx is not None:
-            idx = idx.replace("!", "ESC")
+            idx = outp(idx)
             ret = self.menuFuncs[idx][1](self)
             self.ControlCtx.clear()  # 防止一些功能要读取快捷键缓冲区，延后clear
             return ret

@@ -1,5 +1,6 @@
 from models import Menu
 from plugins.mainMenu import _MainMenuPlug
+from utils.handleChar import outp
 
 # 一些功能回显字符串
 
@@ -38,7 +39,7 @@ def showFuncInfo(menu: Menu.Menu):
     """得到某功能的具体信息"""
     isLaw, idx = menu.ControlCtx._rule(menu.ControlCtx.getCurrentShortCut()[1:])
     if idx is not None and isLaw is True:
-        idx = idx.replace("!", "ESC")
+        idx = outp(idx)
         return menu.menuFuncs[idx][3] + ":" + menu.menuFuncs[idx][0], None, 1
     return "", None, 1
 

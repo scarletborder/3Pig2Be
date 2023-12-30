@@ -4,6 +4,7 @@ CLI视觉效果
 import keyboard
 from models import Menu
 import os, sys
+from utils import handleChar
 
 
 class Viewer:
@@ -18,8 +19,7 @@ class Viewer:
     def readKey(self, keyEvent: keyboard.KeyboardEvent):
         name = keyEvent.name
         """特殊名称转换()除了shift)"""
-        if name == "esc":
-            name = "!"
+        name = handleChar.inp(str(name))
 
         if keyEvent.event_type == "down":
             if keyEvent.name == "shift":

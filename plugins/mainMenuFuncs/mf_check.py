@@ -1,6 +1,7 @@
 """勾选"""
 from models.Menu import Menu
 from models.TagContext import TagContext
+from plugins.mainMenuFuncs.lib_check import _delAllCheckedTag, _getAllCheckedTagItemPath
 from plugins.mainMenu import _MainMenuPlug
 
 
@@ -37,27 +38,12 @@ def addSuffixToMainMenu(menu: Menu):
     menu.kwargs["PreviewItemSuffixList"].append(__itemTickBox)
 
 
-def __clearTagCtxWithOnlyCheck(item: tuple):
-    """删除只有Menu.TagCtx中只有Type,checked以及有ExtraInfo但是为空的item"""
-    itemKey = item[0]
-    itemValue = item[1]
-    situation1 = set(itemValue.keys()).issubset(("Type", "checked"))
-    situation2 = False
-    if situation1 is not True:
-        if set(itemValue.keys()).issubset(("Type", "checked", "ExtraInfo")):
-            if len(itemValue.get("ExtraInfo", dict())) == 0:
-                situation2 = True
-
-    if situation1 or situation2:
-        return True
-    return False
-
-
 # def clearTagCtxWithRule(menu: Menu):
 #     """通过某种规则删除Menu.TagCtx的键值对"""
 
 
-@_MainMenuPlug.dregNewMenuFunc("测试:删除所有only check", "x", "delAllTick", 0)
+@_MainMenuPlug.dregNewMenuFunc("测试:签出所有only check", "x", "delAllTick", 0)
 def test_delAllCheckedTag(menu: Menu):
-    num = menu.tagCtx.delItemWithRule(__clearTagCtxWithOnlyCheck)
-    return f"has already delete all {num} tick", None, 3
+    ret = _getAllCheckedTagItemPath(menu.tagCtx)
+    num = _delAllCheckedTag(menu.tagCtx)
+    return f"{ret}\nhas already delete all {num} tick", None, 3
