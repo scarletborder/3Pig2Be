@@ -10,7 +10,12 @@ def pressAndCheck(menu: Menu):
     反选
     """
     # 获得选中项
-    idx = menu.kwargs["__ItemPointer"]
+    idx = (
+        menu.kwargs["manager"]
+        .CurrentDir.contents[menu.kwargs["__ItemPointer"]]
+        .filePath
+    )
+
     menu.tagCtx.setReverseCheck(idx, False)
 
     return "", None, 2
@@ -23,9 +28,14 @@ def addSuffixToMainMenu(menu: Menu):
         # ipointer : int= args[0]
         tagCtx: TagContext = args[1]
         idx = args[2]
+        idx = menu.kwargs["manager"].CurrentDir.contents[idx].filePath
         isTick = tagCtx.getCheck(idx, False)
         if isTick is True:
             return "[+]"
         return "[ ]"
 
     menu.kwargs["PreviewItemSuffixList"].append(__itemTickBox)
+
+
+def clearTagCtxWithOnlyCheck(menu: Menu):
+    """删除只有Menu.TagCtx中只有Type,checked以及有ExtraInfo但是为空的item"""

@@ -4,7 +4,6 @@ import logging
 class TagContext:
     """用来给菜单的选项打tag的
     ## params
-    - optionNums: 被打tag的项目个数
     - initRule: 初始化tag表的函数，接受TagCtx,*args,**kwargs作为参数
     - *args: 初始化项目tag用
     ## method
@@ -22,29 +21,30 @@ class TagContext:
     2. 二级菜单配置某些细节。
     """
 
-    def __init__(self, optionNums: int, initRule, *args, **kwargs) -> None:
-        self.__optionNums = optionNums
-        self.__store: dict[int, dict] = dict()
+    def __init__(self, initRule, *args, **kwargs) -> None:
+        # self.__optionNums = optionNums
+        self.__store: dict[str, dict] = dict()
         initRule(self, *args, **kwargs)  # 进行如ExtraInfo同步等初始化操作
         pass
 
-    def getOptionNums(self):
-        return self.__optionNums
+    # def getOptionNums(self):
+    #     return self.__optionNums
 
-    def setTagDetail(self, opt: int, tagInfo: dict, overRide: bool = False):
-        if opt >= self.__optionNums:
-            logging.error(
-                "missing idx", str(opt), "max number is ", str(self.__optionNums)
-            )
-            return
+    def setTagDetail(self, itemKey: str, newDict: dict, overRide: bool = False):
+        # if itemKey >= self.__optionNums:
+        #     logging.error(
+        #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
+        #     )
+        #     return
         if overRide is True:
-            tagDict = tagInfo
+            oldDict = newDict
         else:
-            tagDict = self.__store.get(opt, dict())
-            tagDict.update(tagInfo)
-        self.__store[opt] = tagDict
+            oldDict = self.__store.get(itemKey, dict())
+            oldDict.update(newDict)
+        self.__store[itemKey] = oldDict
+        return oldDict
 
-    def setTagDetailWithRule(self, opt: int, rule, overRide: bool = False):
+    def setTagDetailWithRule(self, itemKey: str, rule, overRide: bool = False):
         """通过规则得到字典改变tag上下文
         ## params
         - rule: 规则，接受单条项目的字典dict作为参数，返回新字典
@@ -52,24 +52,25 @@ class TagContext:
             - False: 用通过规则生成的某条项目新字典更新原字典
             - True:用新的某条项目的字典替换旧的某条项目字典
         """
-        if opt >= self.__optionNums:
-            logging.error(
-                "missing idx", str(opt), "max number is ", str(self.__optionNums)
-            )
-            return
-        tagDict = self.__store.get(opt, dict())
-        newDict = rule(tagDict)
+        # if itemKey >= self.__optionNums:
+        #     logging.error(
+        #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
+        #     )
+        #     return
+        oldDict = self.__store.get(itemKey, dict())
+        newDict = rule(oldDict)
         if overRide is True:
-            tagDict = newDict
+            oldDict = newDict
         else:
-            tagDict = self.__store.get(opt, dict())
-            tagDict.update(newDict)
-        self.__store[opt] = tagDict
+            oldDict = self.__store.get(itemKey, dict())
+            oldDict.update(newDict)
+        self.__store[itemKey] = oldDict
+        return oldDict
 
-    def setCheck(self, opt: int, isCheck: bool, overRide: bool = False):
-        self.setTagDetail(opt, {"checked": isCheck}, overRide=overRide)
+    def setCheck(self, itemKey: str, isCheck: bool, overRide: bool = False):
+        self.setTagDetail(itemKey, {"checked": isCheck}, overRide=overRide)
 
-    def setReverseCheck(self, opt: int, overRide: bool = False):
+    def setReverseCheck(self, itemKey: str, overRide: bool = False):
         def reverse(tagDict: dict) -> dict:
             checked = tagDict.get("checked", False)
             if checked is True:
@@ -78,43 +79,46 @@ class TagContext:
                 tagDict["checked"] = True
             return tagDict
 
-        self.setTagDetailWithRule(opt, reverse, overRide)
+        return self.setTagDetailWithRule(itemKey, reverse, overRide)
 
-    def getTagAttrs(self, opt: int):
-        if opt >= self.__optionNums:
-            logging.error(
-                "missing idx", str(opt), "max number is ", str(self.__optionNums)
-            )
-            return None
-        return self.__store.get(opt, dict()).keys()
+    def getTagAttrs(self, itemKey: str):
+        # if itemKey >= self.__optionNums:
+        #     logging.error(
+        #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
+        #     )
+        #     return None
+        return self.__store.get(itemKey, dict()).keys()
 
-    def getTagAllDetail(self, opt: int):
+    def getTagAllDetail(self, itemKey: str):
         """得到单条项目的所有属性的字典"""
-        if opt >= self.__optionNums:
-            logging.error(
-                "missing idx", str(opt), "max number is ", str(self.__optionNums)
-            )
-            return None
-        return self.__store.get(opt, dict())
+        # if itemKey >= self.__optionNums:
+        #     logging.error(
+        #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
+        #     )
+        #     return None
+        return self.__store.get(itemKey, dict())
 
-    def getTagDetail(self, opt: int, tag: str, default):
-        if opt >= self.__optionNums:
-            logging.error(
-                "missing idx", str(opt), "max number is ", str(self.__optionNums)
-            )
-            return None
-        tagDict = self.__store.get(opt, dict())
-        return tagDict.get(tag, default)
+    def getTagDetail(self, itemKey: str, tagKey: str, default):
+        # if itemKey >= self.__optionNums:
+        #     logging.error(
+        #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
+        #     )
+        #     return None
+        tagDict = self.__store.get(itemKey, dict())
+        return tagDict.get(tagKey, default)
 
-    def getCheck(self, opt: int, default: bool = False):
-        return self.getTagDetail(opt, "checked", default)
+    def getCheck(self, itemKey: str, default: bool = False):
+        return self.getTagDetail(itemKey, "checked", default)
 
-    def getAllTagDetail(self, tag: str, default) -> list:
-        """得到所有项目的某属性的字典"""
-        ret = []
-        for opt in range(self.__optionNums):
-            ret.append(self.getTagDetail(opt, tag, default))
+    def getAllTagDetail(self, tagKey: str, default) -> dict:
+        """得到所有项目的某属性dict[str,Any]"""
+        ret = dict()
+        # for itemKey in range(self.__optionNums):
+        #     ret.append(self.getTagDetail(itemKey, tag, default))
+        for itemKey in self.__store.keys():
+            ret[itemKey] = self.getTagDetail(itemKey, tagKey, default)
         return ret
 
     def getAllCheck(self):
+        """dict[str,bool]"""
         return self.getAllTagDetail("checked", False)

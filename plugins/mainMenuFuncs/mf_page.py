@@ -5,7 +5,7 @@
 from models import DirObj, Menu, TagContext, ItemObj
 import logging
 from utils.PlugCtrl import PlugCtrl
-from plugins.mainMenu import _MainMenuPlug
+from plugins.mainMenu import _MainMenuPlug, _mainMenuTagCtxInitRule
 
 # 基本行为(非插件)，如打开，翻页，勾选等
 # 对mainMenu进行特化
@@ -18,12 +18,12 @@ from plugins.mainMenu import _MainMenuPlug
 """
 
 
-def __initTagCtx(tagCtx: TagContext.TagContext, *args, **kwargs):
-    items: list[ItemObj.ItemObj] = kwargs.get("itemobjs", [])
-    l = len(items)
-    for idx in range(l):
-        tagCtx.setTagDetail(idx, {"type": items[idx].type}, True)
-        tagCtx.setTagDetail(idx, items[idx].ExtraInfo, False)
+# def __initTagCtx(tagCtx: TagContext.TagContext, *args, **kwargs):
+#     items: list[ItemObj.ItemObj] = kwargs.get("itemobjs", [])
+#     # l = len(items)
+#     for item in items:
+#         tagCtx.setTagDetail(item.filePath, {"type": item.type}, False)
+#         tagCtx.setTagDetail(item.filePath, item.ExtraInfo, False)
 
 
 @_MainMenuPlug.dregNewMenuFunc("打开文件夹", "d", "openDir", 0)
@@ -43,11 +43,11 @@ def openDir(menu: Menu.Menu):
         )
         menu.kwargs["__ItemPointer"] = 0
         menu.kwargs["manager"].initCurrentDirInfo()
-        menu.tagCtx = TagContext.TagContext(
-            len(menu.kwargs["manager"].CurrentDir.contents),
-            __initTagCtx,
-            itemobjs=menu.kwargs["manager"].CurrentDir.contents,
-        )
+        # menu.tagCtx = TagContext.TagContext(
+        #     # len(menu.kwargs["manager"].CurrentDir.contents),
+        #     _mainMenuTagCtxInitRule,
+        #     itemobjs=menu.kwargs["manager"].CurrentDir.contents,
+        # )
         return "", None, 3
 
 
@@ -56,11 +56,11 @@ def backDir(menu: Menu.Menu):
     status = menu.kwargs["manager"].backDir()
     if status is True:
         menu.kwargs["__ItemPointer"] = 0
-        menu.tagCtx = TagContext.TagContext(
-            len(menu.kwargs["manager"].CurrentDir.contents),
-            __initTagCtx,
-            itemobjs=menu.kwargs["manager"].CurrentDir.contents,
-        )
+        # menu.tagCtx = TagContext.TagContext(
+        #     # len(menu.kwargs["manager"].CurrentDir.contents),
+        #     _mainMenuTagCtxInitRule,
+        #     itemobjs=menu.kwargs["manager"].CurrentDir.contents,
+        # )
         return "", None, 3
     else:
         return "已到根目录下", None, 1

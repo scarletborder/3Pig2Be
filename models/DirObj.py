@@ -21,6 +21,12 @@ class DirObj(ItemObj.ItemObj):
     def getDirPath(self) -> str:
         return self.fatherPath + "\\" + self.Name
 
+    def getFileNameList(self) -> list[str]:
+        return [_.Name for _ in self.contents]
+
+    def getFilePathList(self) -> list[str]:
+        return [_.filePath for _ in self.contents]
+
     def initInfo(self, supportExts: set, fileInitFuncs: dict, dirInitFuncs: list):
         """首次被访问，对其下文件/文件夹进行初始化信息"""
         self.contents.clear()

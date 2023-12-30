@@ -1,4 +1,3 @@
-"""插件
 # 插件编写指南
 所有在插件包中通过注册函数注册的信息将被PlugCtrl获取
 插件继承于BasePlugin基类，在插件main文件的最后需要显性地执行utils中PlugCtrl.loadPlugin()方法
@@ -21,10 +20,10 @@ regDirInit(self, func): 注册文件夹对象初始化函数
 - func: 接受一个DirObj作为参数的函数，并在DirObj.extraInfo添加相关信息
         
 regNewFileConvert(self, srcExt: str, dstExt: str, Description, func): 注册文件转换功能
-func需要支持接受FileObj和转化后的路径path作为参数
-{"docx":[("pdf",func1)]}
+- func需要支持接受FileObj和转化后的路径path作为参数
+    - {"docx":[("pdf",func1)]}
 
- regNewMenuFunc(self, func, Description, shortCut: str, name: str, menuid: int): 拓展管理器行为
+regNewMenuFunc(self, func, Description, shortCut: str, name: str, menuid: int): 拓展管理器行为
 - func: 其中func成员接受一个Menu变量作为参数
 - menuid: 被拓展的菜单id
         
@@ -61,12 +60,3 @@ __init__(self, rule)
 - MainMenu: 0
 - PluginList: 1
 - ConvertMenu: 2
-"""
-import pkgutil
-
-
-__path__ = pkgutil.extend_path(__path__, __name__)
-for imp, module, ispackage in pkgutil.walk_packages(
-    path=__path__, prefix=__name__ + "."
-):
-    __import__(module)

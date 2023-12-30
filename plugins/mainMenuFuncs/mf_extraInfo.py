@@ -5,7 +5,7 @@ from plugins.mainMenu import _MainMenuPlug
 
 
 def __getItemDetail(menu: Menu.Menu, idx: int) -> str:
-    """获得当前路径某文件的具体信息
+    """获得当前路径序号文件的具体信息
     ## params
     - return: 如果idx越界返回`None`，否则
     |params|description|type|必须|
@@ -15,10 +15,10 @@ def __getItemDetail(menu: Menu.Menu, idx: int) -> str:
     |Chosen|是否勾选|bool|否|
     |ExtraInfo|插件规定的额外信息|dict|是|
     """
-    if idx >= menu.tagCtx.getOptionNums():
-        return "No found idx"
+    # if idx >= menu.tagCtx.getOptionNums():
+    #     return "No found idx"
     item = menu.kwargs["manager"].CurrentDir.contents[idx]
-    return str(item.Name) + str(menu.tagCtx.getTagAllDetail(idx))
+    return str(item.Name) + str(menu.tagCtx.getTagAllDetail(item.filePath))
 
 
 # def getMenuFuncInfo(menu: Menu.Menu):

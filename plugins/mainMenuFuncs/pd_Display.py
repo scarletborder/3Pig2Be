@@ -72,7 +72,7 @@ def getPageInfo(menu: Menu.Menu) -> str:
 
 
 def littleTip(menu: Menu.Menu) -> str:
-    return "^q + 主页快捷键 可查看帮助"
+    return "q + 主页快捷键 可查看帮助"
 
 
 def supportedShortCut(menu: Menu.Menu) -> str:

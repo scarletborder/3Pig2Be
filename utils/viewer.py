@@ -47,7 +47,7 @@ class Viewer:
         """
         if self.resetCode == 4:
             if len(self.MenuStack) == 1:
-                keyboard.press("delete")
+                keyboard.press("ESC")
                 sys.exit(0)
             else:
                 self.MenuStack.pop()

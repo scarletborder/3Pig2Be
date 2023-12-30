@@ -47,10 +47,16 @@ menufuncs的成员为(Description, func, shortCut, name). 其中func([1])成员�
 返回值只接受(str|None,Menu|None,int)，Menu不为空则显示新的菜单，最后一个int是resetCode
 以下定义func们
 """
-# 功能-显示
 
 
-# 功能-勾选
+def _mainMenuTagCtxInitRule(tagCtx: TagContext.TagContext, *args, **kwargs):
+    # 目前打开没有必要创建信息，当然可以通过注册主菜单的菜单初始化函数来修改这条
+    # items: list[ItemObj.ItemObj] = kwargs.get("itemobjs", [])
+    # # l = len(items)
+    # for item in items:
+    #     tagCtx.setTagDetail(item.filePath, {"type": item.type}, False)
+    #     tagCtx.setTagDetail(item.filePath, item.ExtraInfo, False)
+    return
 
 
 class __mainMenuPlug(BasePlugin.BasePlugin):
@@ -66,23 +72,16 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
 
 
 _MainMenuPlug = __mainMenuPlug(
-    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.1b"
+    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.2a"
 )
 
 
 def __initMainMenu(menu: Menu.Menu):
     manager = Manager("")  # 保证根目录和其下初始化过
 
-    def initTagCtx(tagCtx: TagContext.TagContext, *args, **kwargs):
-        items: list[ItemObj.ItemObj] = kwargs.get("itemobjs", [])
-        l = len(items)
-        for idx in range(l):
-            tagCtx.setTagDetail(idx, {"type": items[idx].type}, True)
-            tagCtx.setTagDetail(idx, items[idx].ExtraInfo, False)
-
     menu.tagCtx = TagContext.TagContext(
-        len(manager.CurrentDir.contents),
-        initTagCtx,
+        # len(manager.CurrentDir.contents),
+        _mainMenuTagCtxInitRule,
         itemobjs=manager.CurrentDir.contents,
     )
     menu.ControlCtx = ControlContext.ControlContext(controlRule)

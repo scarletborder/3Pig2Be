@@ -3,8 +3,6 @@ from config.EnvCfg import EnvCfg
 
 # 检验更新
 from utils import SoftWareInfo
-import sys
-
 
 print(SoftWareInfo.getInfo())
 # 加载插件
