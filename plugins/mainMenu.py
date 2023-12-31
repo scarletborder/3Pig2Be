@@ -1,5 +1,5 @@
 from models.Manager import Manager
-from config.EnvCfg import EnvCfg
+from Constant.config.EnvCfg import EnvCfg
 from models import (
     ItemObj,
     Menu,
@@ -8,7 +8,7 @@ from models import (
     BasePlugin,
 )
 from utils.PlugCtrl import PlugCtrl
-from plugins.mainMenuFuncs.rule import controlRule
+from plugins.mainMenuFuncs.rule import mainMenuControlRule
 
 # 显示函数区
 # 被动显示
@@ -72,8 +72,10 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
 
 
 _MainMenuPlug = __mainMenuPlug(
-    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.2a"
+    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.3a"
 )
+
+from utils.combineContext import combineControlWithRule
 
 
 def __initMainMenu(menu: Menu.Menu):
@@ -84,7 +86,7 @@ def __initMainMenu(menu: Menu.Menu):
         _mainMenuTagCtxInitRule,
         itemobjs=manager.CurrentDir.contents,
     )
-    menu.ControlCtx = ControlContext.ControlContext(controlRule)
+    menu.ControlCtx = combineControlWithRule(menu.ControlCtx, mainMenuControlRule)
     menu.displayFuncs = [
         getCurrentDir,
         getHeader,

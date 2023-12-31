@@ -36,6 +36,12 @@ class ControlContext:
         """字符串形式"""
         return self.getCurrentShortCut()
 
+    def getRule(self):
+        return self._rule
+
+    def changeRule(self, rule):
+        self._rule = rule
+
 
 """
         # 判断是否合法的目前键入字母

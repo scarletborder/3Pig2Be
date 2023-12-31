@@ -23,8 +23,9 @@ class TagContext:
 
     def __init__(self, initRule, *args, **kwargs) -> None:
         # self.__optionNums = optionNums
-        self.__store: dict[str, dict] = dict()
-        initRule(self, *args, **kwargs)  # 进行如ExtraInfo同步等初始化操作
+        self.store: dict[str, dict] = dict()
+        if initRule is not None:
+            initRule(self, *args, **kwargs)  # 进行如ExtraInfo同步等初始化操作
         pass
 
     # def getOptionNums(self):
@@ -32,7 +33,7 @@ class TagContext:
 
     def delItem(self, itemKey: str) -> bool:
         """删除TagCtx中的某键值对"""
-        ret = self.__store.pop(itemKey, None)
+        ret = self.store.pop(itemKey, None)
         if ret is None:
             return False
         return True
@@ -42,12 +43,12 @@ class TagContext:
         rule函数对象接受一个键值对即(str,dict[Any:Any])类型参数，返回bool
         """
         readyToDel = []
-        for itemKey, itemValue in self.__store.items():
+        for itemKey, itemValue in self.store.items():
             if rule((itemKey, itemValue)) is True:
                 readyToDel.append(itemKey)
 
         for itemKey in readyToDel:
-            self.__store.pop(itemKey)
+            self.store.pop(itemKey)
         return len(readyToDel)
 
     def setTagDetail(self, itemKey: str, newDict: dict, overRide: bool = False):
@@ -59,9 +60,9 @@ class TagContext:
         if overRide is True:
             oldDict = newDict
         else:
-            oldDict = self.__store.get(itemKey, dict())
+            oldDict = self.store.get(itemKey, dict())
             oldDict.update(newDict)
-        self.__store[itemKey] = oldDict
+        self.store[itemKey] = oldDict
         return oldDict
 
     def setTagDetailWithRule(self, itemKey: str, rule, overRide: bool = False):
@@ -77,14 +78,14 @@ class TagContext:
         #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
         #     )
         #     return
-        oldDict = self.__store.get(itemKey, dict())
+        oldDict = self.store.get(itemKey, dict())
         newDict = rule(oldDict)
         if overRide is True:
             oldDict = newDict
         else:
-            oldDict = self.__store.get(itemKey, dict())
+            oldDict = self.store.get(itemKey, dict())
             oldDict.update(newDict)
-        self.__store[itemKey] = oldDict
+        self.store[itemKey] = oldDict
         return oldDict
 
     def setCheck(self, itemKey: str, isCheck: bool, overRide: bool = False):
@@ -107,7 +108,7 @@ class TagContext:
         #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
         #     )
         #     return None
-        return self.__store.get(itemKey, dict()).keys()
+        return self.store.get(itemKey, dict()).keys()
 
     def getTagAllDetail(self, itemKey: str):
         """得到单条项目的所有属性的字典"""
@@ -116,29 +117,49 @@ class TagContext:
         #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
         #     )
         #     return None
-        return self.__store.get(itemKey, dict())
+        return self.store.get(itemKey, dict())
 
-    def getTagDetail(self, itemKey: str, tagKey: str, default):
+    def getTagDetail(
+        self, itemKey: str, tagKey: str, default, dismissMissing: bool = False
+    ):
         # if itemKey >= self.__optionNums:
         #     logging.error(
         #         "missing idx", str(itemKey), "max number is ", str(self.__optionNums)
         #     )
         #     return None
-        tagDict = self.__store.get(itemKey, dict())
+        tagDict = self.store.get(itemKey, None)
+        if tagDict is None:
+            if dismissMissing is False:
+                tagDict = dict()
+            else:
+                return None
+
         return tagDict.get(tagKey, default)
 
-    def getCheck(self, itemKey: str, default: bool = False):
-        return self.getTagDetail(itemKey, "checked", default)
+    def getCheck(
+        self, itemKey: str, default: bool = False, dismissMissing: bool = False
+    ):
+        return self.getTagDetail(
+            itemKey, "checked", default, dismissMissing=dismissMissing
+        )
 
-    def getAllTagDetail(self, tagKey: str, default) -> dict:
-        """得到所有项目的某属性dict[str,Any]"""
+    def getAllTagDetail(
+        self, tagKey: str, default, dismissMissing: bool = False
+    ) -> dict:
+        """得到所有项目的某属性dict[str,Any]
+        : dismissMissing - 如果没有找到指定的itemKey就忽略并返回该Key对应值为None
+        """
         ret = dict()
         # for itemKey in range(self.__optionNums):
         #     ret.append(self.getTagDetail(itemKey, tag, default))
-        for itemKey in self.__store.keys():
+        for itemKey in self.store.keys():
             ret[itemKey] = self.getTagDetail(itemKey, tagKey, default)
         return ret
 
-    def getAllCheck(self):
+    def getAllCheck(self, dismissMissing: bool = False):
         """dict[str,bool]"""
-        return self.getAllTagDetail("checked", False)
+        return self.getAllTagDetail("checked", False, dismissMissing)
+
+    def combineTagContext(self, b):
+        self.store.update(b.store)
+        return self

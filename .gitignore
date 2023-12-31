@@ -1,6 +1,7 @@
 # Some unfinished Plugin
 plugins/DefaultFileProcessor.py
 plugins/WaterPrint.py
+plugins/WaterPrintFuncs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

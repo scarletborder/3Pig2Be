@@ -4,10 +4,13 @@ CLI视觉效果
 import keyboard
 from models import Menu
 import os, sys
-from utils import handleChar
+from utils import handleChar, MenuMsgQueue
 
 
 class Viewer:
+    """视图
+    管理菜单输入输出"""
+
     def __init__(self) -> None:
         self.ShiftDown = False
         self.MenuStack: list[Menu.Menu] = [Menu.Menu(0)]
@@ -35,6 +38,19 @@ class Viewer:
             if keyEvent.name == "shift":
                 self.ShiftDown = False
 
+    def forward(self, reMenu: Menu.Menu):
+        MenuMsgQueue.MenuMsgQueue.getMsg(reMenu)
+        self.MenuStack.append(reMenu)
+
+    def back(self):
+        if len(self.MenuStack) == 1:
+            keyboard.press("ESC")
+            sys.exit(0)
+        else:
+            self.MenuStack.pop()
+            MenuMsgQueue.MenuMsgQueue.getMsg(self.MenuStack[-1])
+        pass
+
     def input(self, inp: str):
         recallBuffer, reMenu, self.resetCode = self.MenuStack[-1].input(inp)
         """resetCode
@@ -46,17 +62,13 @@ class Viewer:
         4 - 向上级菜单返回
         """
         if self.resetCode == 4:
-            if len(self.MenuStack) == 1:
-                keyboard.press("ESC")
-                sys.exit(0)
-            else:
-                self.MenuStack.pop()
+            self.back()
 
         if self.resetCode == 1 or self.resetCode == 3 or self.resetCode == 4:
             self.recallBuffer = recallBuffer
 
         if reMenu is not None:
-            self.MenuStack.append(reMenu)
+            self.forward(reMenu)
 
         self.setDisplayMain()
         self.setDisplayRecall()

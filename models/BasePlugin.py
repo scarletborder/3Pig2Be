@@ -1,3 +1,6 @@
+from utils.combineContext import combineControlWithRule
+
+
 class BasePlugin(object):
     def __init__(
         self,
@@ -120,5 +123,21 @@ class BasePlugin(object):
 
         def inner(func):
             self.regMenuInitFunc(func, menuid)
+
+        return inner
+
+    def addMenuControlRule(self, rule, menuId: int):
+        """增加控制函数
+        传入str返回bool(是否是任何指令快捷键的前缀),idx(方法序号)
+        """
+
+        def __addRule(menu):
+            menu.ControlCtx = combineControlWithRule(menu.ControlCtx, rule)
+
+        self.regMenuInitFunc(__addRule, menuId)
+
+    def daddMenuControlRule(self, menuId: int):
+        def inner(func):
+            self.addMenuControlRule(func, menuId)
 
         return inner
