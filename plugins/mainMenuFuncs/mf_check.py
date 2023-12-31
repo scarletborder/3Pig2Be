@@ -1,7 +1,7 @@
 """勾选"""
 from models.Menu import Menu
 from models.TagContext import TagContext
-from plugins.mainMenuFuncs.lib_check import _delAllCheckedTag, _getAllCheckedTagItemPath
+
 from plugins.mainMenu import _MainMenuPlug
 
 
@@ -40,10 +40,3 @@ def addSuffixToMainMenu(menu: Menu):
 
 # def clearTagCtxWithRule(menu: Menu):
 #     """通过某种规则删除Menu.TagCtx的键值对"""
-
-
-@_MainMenuPlug.dregNewMenuFunc("测试:签出所有only check", "x", "delAllTick", 0)
-def test_delAllCheckedTag(menu: Menu):
-    ret = _getAllCheckedTagItemPath(menu.tagCtx)
-    num = _delAllCheckedTag(menu.tagCtx)
-    return f"{ret}\nhas already delete all {num} tick", None, 3

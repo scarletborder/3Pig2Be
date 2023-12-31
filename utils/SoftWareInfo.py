@@ -1,5 +1,5 @@
 import requests
-from config.EnvCfg import EnvCfg
+from Constant.config.EnvCfg import EnvCfg
 import yaml, logging
 
 

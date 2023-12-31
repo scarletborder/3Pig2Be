@@ -16,10 +16,12 @@ def __getItemDetail(menu: Menu.Menu, idx: int) -> str:
     |Chosen|是否勾选|bool|否|
     |ExtraInfo|插件规定的额外信息|dict|是|
     """
-    # if idx >= menu.tagCtx.getOptionNums():
-    #     return "No found idx"
-    item = menu.kwargs["manager"].CurrentDir.contents[idx]
-    return str(item.Name) + str(menu.tagCtx.getTagAllDetail(item.filePath))
+    if menu.tagCtx is not None:
+        # if idx >= menu.tagCtx.getOptionNums():
+        #     return "No found idx"
+        item = menu.kwargs["manager"].CurrentDir.contents[idx]
+        return str(item.Name) + str(menu.tagCtx.getTagAllDetail(item.filePath))
+    return ""
 
 
 # def getMenuFuncInfo(menu: Menu.Menu):
@@ -37,14 +39,10 @@ def showItemDetail(menu: Menu.Menu):
 @_MainMenuPlug.dregNewMenuFunc("显示指令描述", "q", "detail", 0)
 def showFuncInfo(menu: Menu.Menu):
     """得到某功能的具体信息"""
-    isLaw, idx = menu.ControlCtx._rule(menu.ControlCtx.getCurrentShortCut()[1:])
-    if idx is not None and isLaw is True:
-        idx = outp(idx)
-        return menu.menuFuncs[idx][3] + ":" + menu.menuFuncs[idx][0], None, 1
-    return "", None, 1
-
-
-@_MainMenuPlug.dregNewMenuFunc("打开插件管理器", "p", "Plugs", 0)
-def showPluginInfo(menu: Menu.Menu):
-    """从主菜单打开一个插件列表二级菜单"""
-    return "使用JK上下移动\nq键退出", Menu.Menu(1), 3
+    if menu.ControlCtx is not None:
+        isLaw, idx = menu.ControlCtx._rule(menu.ControlCtx.getCurrentShortCut()[1:])
+        if idx is not None and isLaw is True:
+            idx = outp(idx)
+            return menu.menuFuncs[idx][3] + ":" + menu.menuFuncs[idx][0], None, 1
+        return "", None, 1
+    return "此菜单缺失ControlContext", None, 4

@@ -1,13 +1,13 @@
 def __lowControlRule(s: str) -> tuple[bool, str | None]:
     """无q指令的Rule"""
-    if s in {"d", "a", "j", "k", "h", "l", "f", "p", "!", "v", "x"}:
+    if s in {"d", "a", "j", "k", "h", "l", "f", "!", "v"}:
         return True, s
     else:
         return False, None
     pass
 
 
-def controlRule(s: str) -> tuple[bool, str | None]:
+def mainMenuControlRule(s: str) -> tuple[bool, str | None]:
     """快捷键匹配规则
     ## params
     - s: 需要判断的指令
