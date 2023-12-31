@@ -4,7 +4,7 @@ from Constant.config.EnvCfg import EnvCfg
 # 检验更新
 from utils import SoftWareInfo
 
-print(SoftWareInfo.getInfo())
+# print(SoftWareInfo.getInfo())
 # 加载插件
 import plugins as _
 
