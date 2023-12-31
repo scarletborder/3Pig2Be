@@ -72,7 +72,7 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
 
 
 _MainMenuPlug = __mainMenuPlug(
-    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.3a"
+    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.3b"
 )
 
 from utils.combineContext import combineControlWithRule
@@ -119,13 +119,14 @@ def __prefixAndAfterPerLine(menu: Menu.Menu):
         itemPtr = args[0]
         tagCtx: TagContext.TagContext = args[1]
         idx = args[2]
+        item = args[3]
         line = ""
         if idx == itemPtr:
             line = ">\t"
         else:
             line = str(idx) + "\t"
 
-        if tagCtx.getTagDetail(idx, "type", "File") == "dir":
+        if item.type == "dir":
             line += "[D]"
         return line
 

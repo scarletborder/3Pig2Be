@@ -34,13 +34,13 @@ def getListDir(menu: Menu.Menu):
     def __previewItemPrevious(item: ItemObj.ItemObj, idx: int) -> str:
         line = ""
         for func in PreviewItemPrefixList:
-            line += func(__ItemPointer, menu.tagCtx, idx) + "\t"  # 暂时不再添加额外的信息
+            line += func(__ItemPointer, menu.tagCtx, idx, item) + "\t"  # 暂时不再添加额外的信息
         return line
 
     def __previewItemAfter(item: ItemObj.ItemObj, idx: int) -> str:
         line = ""
         for func in PreviewItemSuffixList:
-            line += func(__ItemPointer, menu.tagCtx, idx) + "\t"  # 暂时不再添加额外的信息
+            line += func(__ItemPointer, menu.tagCtx, idx, item) + "\t"  # 暂时不再添加额外的信息
         return line
 
     ret = ""
