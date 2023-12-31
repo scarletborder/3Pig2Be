@@ -33,7 +33,8 @@ regMenuInitFunc(self, func, menuid: int): 菜单初始化函数
         
 
 ## TagCtx
-__init__(self, initRule, *args, **kwargs)
+__init__(self, initRule, *args, **kwargs)  
+可以使用`utils.combineContext.py`里的相关方法进行拓展。
 
 ### initRule
 初始化tag表的函数，接受需要初始化的TagCtx,*args,**kwargs作为参数
@@ -43,11 +44,14 @@ __init__(self, rule)
 
 ### rule
 一个函数判断当前快捷键输入buffer的内容是否合法,传入str返回bool(是否是任何指令快捷键的前缀),idx(方法序号)
+可以使用`utils.combineContext.py`里的相关方法进行拓展。
 
 #### 如何重置规则
 将原来的函数对象成员ContextRule作为一个前置判断条件，做个函数
 
 ## 一些宏定义
+这些常量尚未做成枚举形式，请用户在调用时定义常量而非直接使用数字。  
+
 ### Viewer接受信号resetCode
 重置命令行的等级
 0 - 不重置
@@ -59,4 +63,4 @@ __init__(self, rule)
 ### menuID
 - MainMenu: 0
 - PluginList: 1
-- ConvertMenu: 2
+- WaterPrintMenu: 2

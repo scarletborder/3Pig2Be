@@ -1,3 +1,5 @@
+# docs for external usage
+whucaoDoc.md
 # Some unfinished Plugin
 plugins/DefaultFileProcessor.py
 plugins/WaterPrint.py
