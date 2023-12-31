@@ -4,7 +4,6 @@ from Constant.config.EnvCfg import EnvCfg
 # 检验更新
 from utils import SoftWareInfo
 
-print(SoftWareInfo.getInfo())
 # 加载插件
 import plugins as _
 
@@ -13,6 +12,7 @@ import plugins as _
 from utils import viewer
 
 if __name__ == "__main__":
+    print(SoftWareInfo.getInfo())
     Viewer = viewer.Viewer()
     os.system("pause")
     Viewer.listen()
