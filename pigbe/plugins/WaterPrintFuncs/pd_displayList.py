@@ -40,4 +40,7 @@ def getListDir(menu: Menu.Menu) -> str:
             suffix = "[ ]"
         ret += f"{prefix}\t{filePath}\t\t{suffix}\n"
         idx += 1
+
+    ret += "\n\n使用JK上下移动,\nv勾选反选\nw执行清除水印\ns执行添加水印\ne执行清除&添加水印\nz切换是否删除源文件\n是否删除源文件:"
+    ret += str(menu.tagCtx.getTagDetail("isDelSrc", "default", False))
     return ret

@@ -1,3 +1,4 @@
+import os
 from pigbe.plugins.WaterPrint import _WaterPrintDealPlug
 from pigbe.models.Menu import Menu
 from pigbe.models import TagContext
@@ -23,9 +24,20 @@ from pigbe.plugins.WaterPrintFuncs.lib_delWater import (
     delWatermarkByPix,
     _getTmpDir,
     _addWaterMark,
+    setConfig,
 )
 
 from pigbe.models import viewer
+
+from pigbe.plugins.WaterPrintFuncs.config import WaterPrintPlugCfg
+
+setConfig(
+    WaterPrintPlugCfg["tmp"],
+    WaterPrintPlugCfg["dpi"],
+    WaterPrintPlugCfg["WaterMarkTemplate"],
+    WaterPrintPlugCfg["core"],
+    WaterPrintPlugCfg["MultiMethod"],
+)
 
 
 @_WaterPrintDealPlug.dregMenuInitFunc(2)
@@ -105,7 +117,9 @@ def _delWaterMarkByPix(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除操作，通过图像处理\n")
-    delWatermarkByPix(ret)
+    delWatermarkByPix(
+        ret, isDelSrc=menu.tagCtx.getTagDetail("isDelSrc", "default", False)
+    )
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
@@ -123,7 +137,7 @@ def _delWaterMarkByPixandMark(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除&添加操作，通过图像处理\n")
-    delWatermarkByPix(ret, True)
+    delWatermarkByPix(ret, True, isDelSrc=menu.tagCtx.getTagDetail("isDelSrc", "default", False))
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
@@ -143,9 +157,24 @@ def _AddWaterMark(menu: Menu):
     print("开始执行水印添加操作\n")
     for src, dst in ret:
         _addWaterMark(src, dst)
+        if os.path.exists(src) menu.tagCtx.getTagDetail("isDelSrc", "default", False):
+            os.remove(src)
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
 
     MenuMsgQueue.sendMsg(__delExistedTick, 0, 2)
     return "处理完成", None, viewer.RESSCR_BACKMENU
+
+
+@_WaterPrintDealPlug.dregNewMenuFunc("切换是是否删除源文件", "z", "ifDelSrc", 2)
+def _changeDelSrcMode(menu: Menu):
+    originalMode = menu.tagCtx.getTagDetail("isDelSrc", "default", False)
+    if originalMode is False:
+        originalMode = True
+    else:
+        originalMode = False
+
+    menu.tagCtx.setTagDetail("isDelSrc", {"default": originalMode})
+
+    return f"删除源文件已经切换为{originalMode}", None, viewer.RESSCR_ONLYCALLBACK
