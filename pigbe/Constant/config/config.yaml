@@ -1,0 +1,15 @@
+Global:
+  Name: "pigbe"
+  Title: "3PIG2BE PDF 处理软件"
+  Author: "scarletborder"
+  Description: "A complex tool powered by various plugins to process file."
+  url: "https://github.com/scarletborder/3Pig2Be"
+  Verify_Update: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/main/Constant/config/config.yaml"
+  Verify_Update_dev: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/dev/Constant/config/config.yaml"
+  Version: "0.1.0a1"
+Launch:
+  InitialMenuId: 0 # 初始(栈底)viewer菜单, 默认MAINMENU_MENUID=0
+info:
+  LinePerPage: 10 # 显示时，每一页的最大值，-1为全部显示
+  LinePerFoot: 4 # 脚注下每条中显示的命令数量
+  BaseFuncNum: 5 # 原版支持的命令数量

@@ -1,7 +1,14 @@
 import argparse, sys, os
-from Constant.config.EnvCfg import EnvCfg
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from pigbe.Constant.config.EnvCfg import EnvCfg
+from pigbe.utils.myLogger import Logger
+
+# 检验更新
+from pigbe.utils import SoftWareInfo
+
+# 加载插件
+from pigbe.models import viewer
 
 
 def main_func():
@@ -15,17 +22,9 @@ def main_func():
         action="store_true",
     )
     args = parser.parse_args()
-    import os
-    from utils.myLogger import Logger
-
-    # 检验更新
-    from utils import SoftWareInfo
-
-    # 加载插件
-    import plugins as _
-    from models import viewer
 
     Logger.info(SoftWareInfo.getInfo(args.check_version))
+    import pigbe.plugins as _
 
     os.system("pause")
 
