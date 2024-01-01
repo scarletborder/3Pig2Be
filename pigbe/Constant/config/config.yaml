@@ -4,9 +4,9 @@ Global:
   Author: "scarletborder"
   Description: "A complex tool powered by various plugins to process file."
   url: "https://github.com/scarletborder/3Pig2Be"
-  Verify_Update: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/main/Constant/config/config.yaml"
-  Verify_Update_dev: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/dev/Constant/config/config.yaml"
-  Version: "0.1.0a1"
+  Verify_Update: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/main/pigbe/Constant/config/config.yaml"
+  Verify_Update_dev: "https://raw.githubusercontent.com/scarletborder/3Pig2Be/dev/pigbe/Constant/config/config.yaml"
+  Version: "0.1.0a2"
 Launch:
   InitialMenuId: 0 # 初始(栈底)viewer菜单, 默认MAINMENU_MENUID=0
 info:
