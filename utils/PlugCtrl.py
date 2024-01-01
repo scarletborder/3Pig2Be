@@ -1,5 +1,5 @@
 from models.BasePlugin import BasePlugin
-import logging
+from utils.myLogger import Logger
 
 
 class plugCtrl:
@@ -44,7 +44,7 @@ class plugCtrl:
                 "Version": Plugin.Version,
             }
         )
-        logging.info(
+        Logger.info(
             f"Load plugin successfully {Plugin.PluginName}-{Plugin.Version}-{Plugin.Author} "
         )
 

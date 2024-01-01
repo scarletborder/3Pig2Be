@@ -7,6 +7,9 @@ from plugins.PluginsMenuFuncs import mf_handle, rule
 
 from utils.PlugCtrl import PlugCtrl
 
+# MenuId of new menu
+PLUGINLIST_MENUID = 1
+
 
 class __pluginList(BasePlugin):
     def __init__(

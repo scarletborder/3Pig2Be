@@ -1,7 +1,7 @@
-from models.Manager import Manager
+from plugins.mainMenuFuncs.models import ItemObj
+from plugins.mainMenuFuncs.models.Manager import Manager
 from Constant.config.EnvCfg import EnvCfg
 from models import (
-    ItemObj,
     Menu,
     TagContext,
     ControlContext,
@@ -47,6 +47,8 @@ menufuncs的成员为(Description, func, shortCut, name). 其中func([1])成员�
 返回值只接受(str|None,Menu|None,int)，Menu不为空则显示新的菜单，最后一个int是resetCode
 以下定义func们
 """
+# MenuId of new menu
+MAINMENU_MENUID = 0
 
 
 def _mainMenuTagCtxInitRule(tagCtx: TagContext.TagContext, *args, **kwargs):
@@ -72,7 +74,7 @@ class __mainMenuPlug(BasePlugin.BasePlugin):
 
 
 _MainMenuPlug = __mainMenuPlug(
-    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.0.3b"
+    PluginName="主菜单加载", Description="显示主菜单", Author="scarletborder", Version="0.1.1a"
 )
 
 from utils.combineContext import combineControlWithRule
@@ -110,10 +112,10 @@ def __initMainMenu(menu: Menu.Menu):
     menu.kwargs["manager"] = manager
 
 
-_MainMenuPlug.regMenuInitFunc(__initMainMenu, 0)
+_MainMenuPlug.regMenuInitFunc(__initMainMenu, MAINMENU_MENUID)
 
 
-@_MainMenuPlug.dregMenuInitFunc(0)
+@_MainMenuPlug.dregMenuInitFunc(MAINMENU_MENUID)
 def __prefixAndAfterPerLine(menu: Menu.Menu):
     def __defaultPrefix(*args) -> str:
         itemPtr = args[0]
@@ -126,9 +128,19 @@ def __prefixAndAfterPerLine(menu: Menu.Menu):
         else:
             line = str(idx) + "\t"
 
+        isTick = tagCtx.getCheck(
+            menu.kwargs["manager"].CurrentDir.contents[idx].filePath, False
+        )
+        if isTick is True:
+            line += "[+]\t"
+        else:
+            line += "[ ]\t"
+
         if item.type == "dir":
             line += "[D]"
         return line
+
+    # menu.kwargs["PreviewItemPrefixList"].append(__itemTickBox)
 
     # func(__ItemPointer, menu.tagCtx, idx)
     menu.kwargs["PreviewItemPrefixList"].append(__defaultPrefix)

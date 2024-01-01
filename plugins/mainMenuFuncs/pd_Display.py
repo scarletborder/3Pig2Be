@@ -1,5 +1,6 @@
-from models.Manager import Manager
-from models import ItemObj, Menu, TagContext
+from plugins.mainMenuFuncs.models import ItemObj
+from plugins.mainMenuFuncs.models.Manager import Manager
+from models import Menu
 
 """主菜单的被动信息函数
     原生环境下支持以下方面的方法
@@ -19,7 +20,7 @@ def getCurrentDir(menu: Menu.Menu):
 
 
 def getHeader(menu: Menu.Menu):
-    return "idx\tType\tName\tTick"
+    return "idx\tTick\tType\tName"
 
 
 def getListDir(menu: Menu.Menu):

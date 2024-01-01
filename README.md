@@ -1,12 +1,13 @@
 # 3Pig2Be
-A complex tool powered by various plugins to process file.  
-Easy to extend and fit for beginner.  
+3Pig2Be is a sophisticated file processing tool, equipped with a diverse range of plugins. It is designed to be easily extendable and user-friendly, especially suitable for beginners.
 
-## How to use
-1. Open shell and type `pip install -r requirements.txt` to install all packages used.
-2. Open a directory and type `python **/3pig2be/main.py` to open the main menu.
+## How to Use
+To get started with 3Pig2Be, follow these simple steps:  
+1. Open your terminal or command prompt and execute `pip install -r requirements.txt` to install all the required packages.
+2. Navigate to the desired directory and run `python **/3pig2be/main.py` to access the main menu.
 
-## About plugins
-Various could extend the usage of this program.  
-As you see in the `plugins` directory, even the main menu is written in the form of plugin.
+## About Plugins
+3Pig2Be's functionality can be significantly enhanced through the use of plugins. As you can observe in the `plugins` directory, the main menu itself is implemented as a plugin.   
+This modular approach allows for easy customization and expansion of the tool's capabilities.
+
 [插件编写指南](docs/Plugin-CN_zh.md)

@@ -1,6 +1,7 @@
 """控制的配置
 在一个Context中支持的命令
 """
+from utils.handleChar import outp
 
 
 class ControlContext:
@@ -35,6 +36,10 @@ class ControlContext:
     def getShortCutStr(self) -> str:
         """字符串形式"""
         return self.getCurrentShortCut()
+
+    def getRealShortCutStr(self) -> str:
+        """获得实际的输入(特殊键将转换为大写WORD)，如esc键为ESC而不再是!"""
+        return outp(self.getCurrentShortCut())
 
     def getRule(self):
         return self._rule

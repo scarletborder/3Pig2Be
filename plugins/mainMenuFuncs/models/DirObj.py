@@ -1,5 +1,6 @@
 import os
-from models import ItemObj, FileObj
+from plugins.mainMenuFuncs.models import FileObj
+from plugins.mainMenuFuncs.models import ItemObj
 
 
 class DirObj(ItemObj.ItemObj):

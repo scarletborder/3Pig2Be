@@ -6,14 +6,21 @@ from models import Menu
 import os, sys
 from utils import handleChar, MenuMsgQueue
 
+# enum
+RESSCR_NONE = 0
+RESSCR_ONLYCALLBACK = 1
+RESSCR_ONLYMAINSCREEN = 2
+RESSCR_ALL = 3
+RESSCR_BACKMENU = 4
+
 
 class Viewer:
     """视图
     管理菜单输入输出"""
 
-    def __init__(self) -> None:
+    def __init__(self, MenuId: int) -> None:
         self.ShiftDown = False
-        self.MenuStack: list[Menu.Menu] = [Menu.Menu(0)]
+        self.MenuStack: list[Menu.Menu] = [Menu.Menu(MenuId)]
         self.menuScreen: str = ""
         self.recallBuffer: str = ""
         self.resetCode: int = 3

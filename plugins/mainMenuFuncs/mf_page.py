@@ -2,10 +2,12 @@
 根据行为对文件夹对象进行处理
 """
 
-from models import DirObj, Menu, TagContext, ItemObj
+from models import Menu, TagContext
 import logging
+from plugins.mainMenuFuncs.models import DirObj, ItemObj
 from utils.PlugCtrl import PlugCtrl
-from plugins.mainMenu import _MainMenuPlug, _mainMenuTagCtxInitRule
+from plugins.MainMenu import _MainMenuPlug, _mainMenuTagCtxInitRule
+from models import viewer
 
 # 基本行为(非插件)，如打开，翻页，勾选等
 # 对mainMenu进行特化
@@ -48,7 +50,7 @@ def openDir(menu: Menu.Menu):
         #     _mainMenuTagCtxInitRule,
         #     itemobjs=menu.kwargs["manager"].CurrentDir.contents,
         # )
-        return "", None, 3
+        return "", None, viewer.RESSCR_ALL
 
 
 @_MainMenuPlug.dregNewMenuFunc("退出当前文件夹", "a", "exitDir", 0)
@@ -63,7 +65,7 @@ def backDir(menu: Menu.Menu):
         # )
         return "", None, 3
     else:
-        return "已到根目录下", None, 1
+        return "已到根目录下", None, viewer.RESSCR_ONLYCALLBACK
 
 
 """翻页"""
@@ -77,7 +79,7 @@ def scrollDown(menu: Menu.Menu):
     ):
         return "Up to bottom", None, 1
     menu.kwargs["__ItemPointer"] += 1
-    return "", None, 2
+    return "", None, viewer.RESSCR_ONLYMAINSCREEN
     pass
 
 
@@ -86,7 +88,7 @@ def scrollUp(menu: Menu.Menu):
     if menu.kwargs["__ItemPointer"] == 0:
         return "Up to top", None, 1
     menu.kwargs["__ItemPointer"] -= 1
-    return "", None, 2
+    return "", None, viewer.RESSCR_ONLYMAINSCREEN
 
 
 @_MainMenuPlug.dregNewMenuFunc("", "h", "left", 0)
@@ -96,7 +98,7 @@ def scrollLeft(menu: Menu.Menu):
         return "Up to top", None, 1
     else:
         menu.kwargs["__ItemPointer"] -= menu.kwargs["__LINEPERPAGE"]
-        return "", None, 2
+        return "", None, viewer.RESSCR_ONLYMAINSCREEN
 
 
 @_MainMenuPlug.dregNewMenuFunc("", "l", "right", 0)
@@ -110,12 +112,12 @@ def scrollRight(menu: Menu.Menu):
             int(menu.kwargs["__ItemPointer"] / menu.kwargs["__LINEPERPAGE"] + 1)
             * menu.kwargs["__LINEPERPAGE"]
         )
-        return "", None, 2
+        return "", None, viewer.RESSCR_ONLYMAINSCREEN
 
 
 @_MainMenuPlug.dregNewMenuFunc("退出程序", "ESC", "Exit", 0)
 def exitExec(menu: Menu.Menu):
-    return "", None, 4
+    return "", None, viewer.RESSCR_BACKMENU
 
 
 # 在选择中，多项选择会涉及到上翻页和下翻页，自动忽略文件夹

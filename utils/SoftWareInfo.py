@@ -65,5 +65,8 @@ def verifyUpdate() -> str:
     return ret
 
 
-def getInfo() -> str:
-    return startInfo() + verifyUpdate()
+def getInfo(checkVersion: bool) -> str:
+    ret = startInfo()
+    if checkVersion:
+        ret += verifyUpdate()
+    return ret

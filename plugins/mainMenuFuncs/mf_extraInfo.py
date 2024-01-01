@@ -1,6 +1,7 @@
 from models import Menu
-from plugins.mainMenu import _MainMenuPlug
+from plugins.MainMenu import _MainMenuPlug
 from utils.handleChar import outp
+from models import viewer
 
 # 一些功能回显字符串
 
@@ -33,7 +34,11 @@ def __getItemDetail(menu: Menu.Menu, idx: int) -> str:
 
 @_MainMenuPlug.dregNewMenuFunc("显示item详细描述", "f", "Info", 0)
 def showItemDetail(menu: Menu.Menu):
-    return __getItemDetail(menu=menu, idx=menu.kwargs["__ItemPointer"]), None, 1
+    return (
+        __getItemDetail(menu=menu, idx=menu.kwargs["__ItemPointer"]),
+        None,
+        viewer.RESSCR_ONLYCALLBACK,
+    )
 
 
 @_MainMenuPlug.dregNewMenuFunc("显示指令描述", "q", "detail", 0)
@@ -44,5 +49,5 @@ def showFuncInfo(menu: Menu.Menu):
         if idx is not None and isLaw is True:
             idx = outp(idx)
             return menu.menuFuncs[idx][3] + ":" + menu.menuFuncs[idx][0], None, 1
-        return "", None, 1
+        return "", None, viewer.RESSCR_ONLYCALLBACK
     return "此菜单缺失ControlContext", None, 4

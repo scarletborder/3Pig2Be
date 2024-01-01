@@ -2,7 +2,8 @@
 """
 from models.BasePlugin import BasePlugin
 import os
-from models import DirObj, TagContext, ItemObj, ControlContext
+from models import TagContext, ControlContext
+from plugins.mainMenuFuncs.models import DirObj, ItemObj
 from utils.PlugCtrl import PlugCtrl
 
 
