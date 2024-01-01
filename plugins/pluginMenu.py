@@ -25,7 +25,7 @@ class __pluginList(BasePlugin):
     pass
 
 
-_PluginMenuPlug = __pluginList("插件列表", "展示你安装的所有插件", "scarletborder", "", "0.0.2a")
+_PluginMenuPlug = __pluginList("插件列表", "展示你安装的所有插件", "scarletborder", "", "0.0.2b")
 
 
 def __initPluginMenu(menu: Menu):
@@ -34,7 +34,7 @@ def __initPluginMenu(menu: Menu):
     menu.kwargs["__ItemPointer"] = 0
 
 
-_PluginMenuPlug.regMenuInitFunc(__initPluginMenu, 1)
+_PluginMenuPlug.regMenuInitFunc(__initPluginMenu, PLUGINLIST_MENUID)
 
 from utils.combineContext import combineControlWithRule
 from plugins.PluginsMenuFuncs.rule import mainMenuControlRule

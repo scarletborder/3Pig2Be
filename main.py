@@ -1,9 +1,13 @@
-import argparse
+import argparse, sys, os
+from Constant.config.EnvCfg import EnvCfg
 
-if __name__ == "__main__":
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
+
+def main_func():
     parser = argparse.ArgumentParser(
-        prog="3Pig2Be",
-        description="A complex tool powered by various plugins to process file.",
+        prog=EnvCfg["Global"]["Name"],
+        description=EnvCfg["Global"]["Description"],
     )
     parser.add_argument(
         "--check-version",
@@ -20,7 +24,6 @@ if __name__ == "__main__":
     # 加载插件
     import plugins as _
     from models import viewer
-    from Constant.config.EnvCfg import EnvCfg
 
     Logger.info(SoftWareInfo.getInfo(args.check_version))
 
@@ -30,4 +33,7 @@ if __name__ == "__main__":
     Viewer = viewer.Viewer(EnvCfg["Launch"]["InitialMenuId"])
 
     Viewer.listen()
-    # 加载主菜单
+
+
+if __name__ == "__main__":
+    main_func()
