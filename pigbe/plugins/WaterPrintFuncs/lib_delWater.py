@@ -48,9 +48,13 @@ def __delTmpDir(src: str):
 
 
 # 去除pdf的水印
-def __remove_pdfwatermark(src: str):
+def __remove_pdfwatermark(src: str, isdelsrc: bool = False):
     # 打开源pfd文件
-    pdf_file = fitz.open(src)
+    try:
+        pdf_file = fitz.open(src)
+    except BaseException:
+        print("无法打开", src)
+        return
     # page_no 设置为0
     page_no = 0
 
@@ -72,13 +76,26 @@ def __remove_pdfwatermark(src: str):
         # print(f"第 {page_no} 页去除完成")
         page_no += 1
 
+    pdf_file.close()
+    if isdelsrc and os.path.exists(src):
+        print("好想删", src)
+        try:
+            os.remove(src)
+        except BaseException:
+            print(src, "无法删除")
+        # shutil.
+
 
 # 去除的pdf水印添加到pdf文件中
 def __pictopdf(src: str, dst: str):
     # 水印截图所在的文件夹
     # pic_dir = input("请输入图片文件夹路径：")
+    try:
+        pdf = fitz.open()
+    except BaseException:
+        print("无法打开", src)
+        return
     pic_dir = _getTmpDir(src)
-    pdf = fitz.open()
     # 图片数字文件先转换成int类型进行排序
     img_files = sorted(os.listdir(pic_dir), key=lambda x: int(str(x).split(".")[0]))
     for img in img_files:
@@ -94,10 +111,16 @@ def __pictopdf(src: str, dst: str):
     __delTmpDir(src)
 
 
-def _addWaterMark(pdf_file_in: str, pdf_file_out: str):
+def _addWaterMark(
+    pdf_file_in: str, pdf_file_out: str, src: str = "", isdelsrc: bool = False
+):
     """把水印添加到pdf中"""
+    try:
+        input_stream = open(pdf_file_in, "rb")
+    except BaseException:
+        print("无法打开", pdf_file_in)
+        return
     pdf_output = PdfWriter()
-    input_stream = open(pdf_file_in, "rb")
     pdf_input = PdfReader(input_stream, strict=False)
 
     # 获取PDF文件的页数
@@ -117,13 +140,21 @@ def _addWaterMark(pdf_file_in: str, pdf_file_out: str):
     with open(pdf_file_out, "wb") as fout:
         pdf_output.write(fout)
 
+    if isdelsrc and os.path.exists(src):
+        # print("好想删", src)
+        try:
+            os.remove(src)
+        except BaseException:
+            print(src, "无法删除")
+        # shutil.
 
-def __bypixfunc(src: str, dst: str, isAdd: bool = False):
-    __remove_pdfwatermark(src)
+
+def __bypixfunc(src: str, dst: str, isAdd: bool = False, isdelsrc: bool = False):
+    __remove_pdfwatermark(src, isdelsrc=isdelsrc)
     __pictopdf(src, dst)
     if isAdd is True:
         print("开始打水印")
-        _addWaterMark(dst, dst)
+        _addWaterMark(dst, dst, src, isdelsrc=isdelsrc)
     print(src, "处理完毕")
 
 
@@ -132,7 +163,7 @@ def err(i):
 
 
 def delWatermarkByPix(
-    files: list[tuple[str, str]], isAdd: bool = False, isDelSrc: bool = False
+    files: list[tuple[str, str]], isAdd: bool = False, isdelsrc: bool = False
 ):
     """图像处理-删除水印功能
     ## params
@@ -143,16 +174,9 @@ def delWatermarkByPix(
         if os.path.exists(dst):
             os.remove(dst)
 
-        # 加载PDF文件
-        def delSrc(_):
-            if isDelSrc and os.path.exists(src):
-                os.remove(src)
-
-        mypool.apply_async(
-            __bypixfunc, (src, dst, isAdd), error_callback=err, callback=delSrc
-        )
+        mypool.apply_async(__bypixfunc, (src, dst, isAdd, isdelsrc), error_callback=err)
 
     mypool.close()
     mypool.join()
-    print("全部文件已经去除水印\n")
-    # os.system("pause")
+    print("全部文件已经完成处理\n")
+    os.system("pause")

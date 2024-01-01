@@ -27,6 +27,7 @@ from pigbe.plugins.WaterPrintFuncs.lib_delWater import (
     setConfig,
 )
 
+ISDELSRC: bool = False
 from pigbe.models import viewer
 
 from pigbe.plugins.WaterPrintFuncs.config import WaterPrintPlugCfg
@@ -117,9 +118,7 @@ def _delWaterMarkByPix(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除操作，通过图像处理\n")
-    delWatermarkByPix(
-        ret, isDelSrc=menu.tagCtx.getTagDetail("isDelSrc", "default", False)
-    )
+    delWatermarkByPix(ret, isdelsrc=ISDELSRC)
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
@@ -137,9 +136,7 @@ def _delWaterMarkByPixandMark(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除&添加操作，通过图像处理\n")
-    delWatermarkByPix(
-        ret, True, isDelSrc=menu.tagCtx.getTagDetail("isDelSrc", "default", False)
-    )
+    delWatermarkByPix(ret, True, isdelsrc=ISDELSRC)
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
@@ -158,7 +155,7 @@ def _AddWaterMark(menu: Menu):
                 ret.append((filePath, dstPath))
     print("开始执行水印添加操作\n")
     for src, dst in ret:
-        _addWaterMark(src, dst)
+        _addWaterMark(src, dst, isdelsrc=ISDELSRC)
         if os.path.exists(src) and menu.tagCtx.getTagDetail(
             "isDelSrc", "default", False
         ):
@@ -173,12 +170,13 @@ def _AddWaterMark(menu: Menu):
 
 @_WaterPrintDealPlug.dregNewMenuFunc("切换是是否删除源文件", "z", "ifDelSrc", 2)
 def _changeDelSrcMode(menu: Menu):
-    originalMode = menu.tagCtx.getTagDetail("isDelSrc", "default", False)
-    if originalMode is False:
-        originalMode = True
+    global ISDELSRC
+    if ISDELSRC is False:
+        ISDELSRC = True
     else:
-        originalMode = False
+        ISDELSRC = False
 
-    menu.tagCtx.setTagDetail("isDelSrc", {"default": originalMode})
+    # setIsDel(originalMode)
+    # menu.tagCtx.setTagDetail("isDelSrc", {"default": originalMode})
 
-    return f"删除源文件已经切换为{originalMode}", None, viewer.RESSCR_ALL
+    return f"删除源文件已经切换为{ISDELSRC}", None, viewer.RESSCR_ALL
