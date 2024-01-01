@@ -24,21 +24,12 @@ from pigbe.plugins.WaterPrintFuncs.lib_delWater import (
     delWatermarkByPix,
     _getTmpDir,
     _addWaterMark,
-    setConfig,
 )
 
 ISDELSRC: bool = False
 from pigbe.models import viewer
 
 from pigbe.plugins.WaterPrintFuncs.config import WaterPrintPlugCfg
-
-setConfig(
-    WaterPrintPlugCfg["tmp"],
-    WaterPrintPlugCfg["dpi"],
-    WaterPrintPlugCfg["WaterMarkTemplate"],
-    WaterPrintPlugCfg["core"],
-    WaterPrintPlugCfg["MultiMethod"],
-)
 
 
 @_WaterPrintDealPlug.dregMenuInitFunc(2)
@@ -118,7 +109,7 @@ def _delWaterMarkByPix(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除操作，通过图像处理\n")
-    delWatermarkByPix(ret, isdelsrc=ISDELSRC)
+    delWatermarkByPix(ret, isAdd=False, isdelsrc=ISDELSRC)
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)
@@ -136,7 +127,7 @@ def _delWaterMarkByPixandMark(menu: Menu):
             if dstPath is not None:
                 ret.append((filePath, dstPath))
     print("开始执行水印删除&添加操作，通过图像处理\n")
-    delWatermarkByPix(ret, True, isdelsrc=ISDELSRC)
+    delWatermarkByPix(ret, isAdd=True, isdelsrc=ISDELSRC)
 
     def __delExistedTick(menu: Menu):
         _delAllCheckedTag(menu.tagCtx)

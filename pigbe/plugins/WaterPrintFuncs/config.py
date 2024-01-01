@@ -9,6 +9,12 @@ WaterPrintPlugCfg = {
     "BottomInfo": "WHUCAO 开源社区:728342352",
     "RotateInfo": "WHUCAO 开源社区",
     "WaterMarkTemplate": os.path.dirname(__file__) + "/WaterMarkTemplate.pdf",
+    # "WaterMarkTemplateL": os.path.dirname(__file__) + "/WaterMarkTemplateL.pdf",
+    "rowsToDelete": [
+        "满绩小铺QQ：1433397577，搜集整理不易，资料自用就好，谢谢！",
+        "满绩小铺 QQ：1433397577，搜集整理不易，自用就好，请勿倒卖，谢谢！",
+    ],
+    "BigWaterMark": ["满绩小铺QQ：1433397577"],
 }
 if __name__ == "__main__":
     print(WaterPrintPlugCfg)

@@ -13,7 +13,7 @@ class __waterPrintDealer(BasePlugin):
 
 
 _WaterPrintDealPlug = __waterPrintDealer(
-    "水印处理", "对PDF文件的水印做出一系列处理\n，目前只支持删除功能", "scarletborder", "", "0.0.3b"
+    "水印处理", "对PDF文件的水印做出一系列处理\n，目前只支持删除功能", "scarletborder", "", "0.0.4a"
 )
 
 import pigbe.plugins.WaterPrintFuncs.mf_water as _
