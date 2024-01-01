@@ -181,4 +181,4 @@ def _changeDelSrcMode(menu: Menu):
 
     menu.tagCtx.setTagDetail("isDelSrc", {"default": originalMode})
 
-    return f"删除源文件已经切换为{originalMode}", None, viewer.RESSCR_ONLYCALLBACK
+    return f"删除源文件已经切换为{originalMode}", None, viewer.RESSCR_ALL
