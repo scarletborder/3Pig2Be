@@ -50,6 +50,8 @@ def watercontrolRule(s: str):
         return True, "e"  # del watermark and make watermark
     elif s == "s":
         return True, "s"
+    elif s == "z":
+        return True, "z"
     elif s == "q":
         return True, "q"  # exit
 

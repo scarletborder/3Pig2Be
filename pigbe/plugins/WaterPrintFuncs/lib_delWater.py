@@ -2,15 +2,26 @@ from itertools import product
 import fitz
 import os
 import shutil
-from multiprocessing import Pool
-from pigbe.plugins.WaterPrintFuncs.config import WaterPrintPlugCfg
+from multiprocessing import pool, get_context
+
 from PyPDF2 import PdfReader, PdfWriter
 
 # enum
-DPI = WaterPrintPlugCfg["dpi"]
-TMP = WaterPrintPlugCfg["tmp"]
-pdf_file_mark = WaterPrintPlugCfg["WaterMarkTemplate"]
+DPI: int = 220
+TMP: str = ""
+PDFFILEMARK: str = ""
+CORE = 6
+MULTIMETHOD: str = "spawn"
+
+
 # print(TMP)
+def setConfig(tmp: str, dpi: int, pdf_file_mark: str, core: int, method: str):
+    global TMP, DPI, PDFFILEMARK, CORE, MULTIMETHOD
+    TMP = tmp
+    DPI = dpi
+    PDFFILEMARK = pdf_file_mark
+    CORE = core
+    MULTIMETHOD = method
 
 
 def _getTmpDir(src: str):
@@ -93,7 +104,7 @@ def _addWaterMark(pdf_file_in: str, pdf_file_out: str):
     pageNum = len(pdf_input.pages)
 
     # 读入水印pdf文件
-    pdf_watermark = PdfReader(open(pdf_file_mark, "rb"), strict=False)
+    pdf_watermark = PdfReader(open(PDFFILEMARK, "rb"), strict=False)
     # 给每一页打水印
     pdf_watermark.pages[0].scale_to(595, 842)
     for i in range(pageNum):
@@ -120,17 +131,28 @@ def err(i):
     print(i)
 
 
-def delWatermarkByPix(files: list[tuple[str, str]], isAdd: bool = False):
+def delWatermarkByPix(
+    files: list[tuple[str, str]], isAdd: bool = False, isDelSrc: bool = False
+):
     """图像处理-删除水印功能
     ## params
     - files: 传入文件路径+转换目的路径列表，保证都是.pdf拓展名
     """
-    pool = Pool(processes=4)
+    mypool = pool.Pool(4, context=get_context(MULTIMETHOD))
     for src, dst in files:
-        # 加载PDF文件
-        pool.apply_async(__bypixfunc, (src, dst, isAdd), error_callback=err)
+        if os.path.exists(dst):
+            os.remove(dst)
 
-    pool.close()
-    pool.join()
+        # 加载PDF文件
+        def delSrc(_):
+            if isDelSrc and os.path.exists(src):
+                os.remove(src)
+
+        mypool.apply_async(
+            __bypixfunc, (src, dst, isAdd), error_callback=err, callback=delSrc
+        )
+
+    mypool.close()
+    mypool.join()
     print("全部文件已经去除水印\n")
     # os.system("pause")

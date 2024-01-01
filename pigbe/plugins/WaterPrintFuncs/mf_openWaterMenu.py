@@ -48,7 +48,7 @@ def enterDelWaterMenu(menu: Menu):
 
         MenuMsgQueue.sendMsg(__changeWaterMenuItem, 2, 0)
         # num = _delAllCheckedTag(menu.tagCtx)
-        return "使用JK上下移动,\nv勾选反选\nw执行清除水印\ns执行添加水印\ne执行清除&添加水印", Menu(2), 3
+        return "使用JK上下移动,\nv勾选反选\nw执行清除水印\ns执行添加水印\ne执行清除&添加水印\nz切换是否删除源文件", Menu(2), 3
         # return f"{ret}\nhas already delete all {num} tick", Menu(2), 3
     return "此菜单缺失ControlContext", None, viewer.RESSCR_BACKMENU
 

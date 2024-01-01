@@ -1,17 +1,18 @@
 import argparse, sys, os
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-from pigbe.Constant.config.EnvCfg import EnvCfg
-from pigbe.utils.myLogger import Logger
-
-# 检验更新
-from pigbe.utils import SoftWareInfo
-
-# 加载插件
-from pigbe.models import viewer
 
 
 def main_func():
+    from pigbe.Constant.config.EnvCfg import EnvCfg
+    from pigbe.utils.myLogger import Logger
+
+    # 检验更新
+    from pigbe.utils import SoftWareInfo
+
+    # 加载插件
+    from pigbe.models import viewer
+
     parser = argparse.ArgumentParser(
         prog=EnvCfg["Global"]["Name"],
         description=EnvCfg["Global"]["Description"],
